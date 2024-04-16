@@ -1,0 +1,5 @@
+#Project binaries
+bin/
+
+#Build files
+build/
