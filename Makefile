@@ -9,7 +9,7 @@ OUTPUT_BINARY := main
 all: $(BIN_DIR)/$(OUTPUT_BINARY)
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c
-	gcc -c $< -o $@
+	gcc -c $< -o $@ -fPIC
 
 $(BUILD_DIR)/lib%.so: $(BUILD_DIR)/%.o
 	gcc -shared $< -o $@
