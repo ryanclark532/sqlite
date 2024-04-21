@@ -8,6 +8,7 @@
 
 int main(int argc, char *argv[])
 {
+    Table *table = new_table();
     InputBuffer *input_buffer = new_input_buffer();
     while (true)
     {
@@ -16,7 +17,7 @@ int main(int argc, char *argv[])
 
         if (input_buffer->buffer[0] == '.')
         {
-            switch (do_meta_command(input_buffer))
+            switch (do_meta_command(input_buffer, table))
             {
             case (META_COMMAND_SUCCESSS):
                 continue;
@@ -30,12 +31,28 @@ int main(int argc, char *argv[])
         {
         case (PREPARE_SUCCESS):
             break;
+        case (PREPARE_SYNTAX_ERROR):
+            printf("Syntax error\n");
+            continue;
+        case (PREPARE_STRING_TOO_LONG):
+            printf("Too long string\n");
+            continue;
+        case (PREPARE_NEGATIVE_ID):
+            printf("ID must be positive\n");
+            continue;
         case (PREPARE_UNRECOGNIZED_STATEMENT):
             printf("Unrecognized statement\n");
             continue;
         }
 
-        execute_statement(&statement);
-        printf("Executed statement\n");
+        switch (execute_statement(&statement, table))
+        {
+        case (EXECUTE_SUCCESS):
+            printf("Executed successfully\n");
+            break;
+        case (EXECUTE_TABLE_FULL):
+            printf("Table is full\n");
+            break;
+        }
     }
 }
